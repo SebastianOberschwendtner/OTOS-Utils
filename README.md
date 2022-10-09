@@ -8,7 +8,7 @@ Utility functions for developing with the OTOS operating system.
 
 
 ## Software Framework
-<!-- ![GitHub Test Status](https://img.shields.io/github/workflow/status/SebastianOberschwendtner/otos-utils/Unit%20Test?label=test) -->
+![GitHub Test Status](https://img.shields.io/github/workflow/status/SebastianOberschwendtner/otos-utils/Unit%20Test?label=test)
 ![GitHub top language](https://img.shields.io/github/languages/top/SebastianOberschwendtner/otos-utils?color=brightgreen)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/SebastianOberschwendtner/otos-utils)
 ![GitHub](https://img.shields.io/github/license/SebastianOberschwendtner/otos-utils)
