@@ -112,6 +112,28 @@ class FontConverter:
 
     ---
     """
+    # === Properties ===
+    @property
+    def fontname(self) -> str:
+        """Gets the name of the font.
+
+        Returns:
+            str: 1x1 [-] The name of the font.
+
+        ---
+        """
+        _name = self.font.getname()[0]
+        return _name.replace(" ", "")
+
+    @property
+    def height_px(self) -> int:
+        return self._height_px
+
+    @property
+    def width_px(self) -> int:
+        return self._width_px
+
+    # === Constructor ===
     def __init__(self, font_path: str, font_size: int):
         """Creates a new font converter.
 
@@ -123,12 +145,18 @@ class FontConverter:
         """
         # Save the font path
         self.font_path = font_path
-        self.height_px = font_size
+        self._height_px = font_size
 
         # Load the font
-        self.font = ImageFont.truetype(font_path, font_size)
-        self.width_px = get_max_width(self.font)
+        try:
+            self.font = ImageFont.truetype(font_path, font_size)
+        except:
+            raise FileNotFoundError("Font file not found.")
 
+        # Get the maximum width of the font
+        self._width_px = get_max_width(self.font)
+
+    # === Methods ===
     def convert_character(self, character: int) -> list:
         """Converts a character to a bitmap.
 

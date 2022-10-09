@@ -153,3 +153,21 @@ class Test_Font_Converter():
         assert char[6] == 0b00000111
         assert char[7] == 0b11110000
         assert char[8] == 0b00000000
+
+    def test_get_fontname(self, Path_Test_Font: pathlib.Path):
+        """Test if the font name is returned correctly."""
+        # Arrange
+        Converter = UUT.FontConverter(str(Path_Test_Font), 8)
+
+        # Act
+        fontname = Converter.fontname
+
+        # Assert
+        assert fontname == "DelugiaPLMono"
+
+    def test_open_invalid_font(self):
+        """Test correct handling of invalid font files."""
+        # Arrange
+        # Act
+        with pytest.raises(FileNotFoundError):
+            Converter = UUT.FontConverter("invalid_font.ttf", 8)

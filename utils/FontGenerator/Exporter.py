@@ -28,9 +28,10 @@ Exporter for the font generator.
 Sebastian Oberschwendtner, :email: sebastian.oberschwendtner@gmail.com
 """
 # === Modules ===
-import pathlib
+from . import pathlib
 
 # === Functions ===
+
 
 def get_namespace_for_size(size: int) -> str:
     """Converts the font size to a namespace.
@@ -40,10 +41,11 @@ def get_namespace_for_size(size: int) -> str:
 
     Returns:
         str: 1xn [str] The namespace for the font size.
-    
+
     ---
     """
     return f"_{size}px"
+
 
 def write_copyright_header(file: pathlib.Path):
     """Writes the copyright header to the file.
@@ -56,13 +58,16 @@ def write_copyright_header(file: pathlib.Path):
     # Write the header
     file.write_text(_OTOS_Copyright)
 
-def write_array_line(file: pathlib.Path, line_number: int, array: list):
-    """Writes a line of an array to the file.
+
+def get_array_line(line_number: int, array: list) -> str:
+    """Get the line of an array as a string.
 
     Args:
-        file (pathlib.Path): 1x1 [-] The file to write to.
         line_number (int): 1x1 [-] The line number of the array in the file.
         array (list): 1xn [-] The array to write.
+
+    Returns:
+        str: 1x1 [-] The line of the array.
 
     ---
     """
@@ -72,11 +77,85 @@ def write_array_line(file: pathlib.Path, line_number: int, array: list):
         line_string += f"{Item:#04x}, "
 
     # End the line with the line number as comment
-    line_string += f"// {line_number:#04x}"
-    
-    # Write the line
-    with  open (file, 'a') as f:
-        f.write(line_string + "\n")
+    if chr(line_number).isprintable() and line_number != 0x5c:
+        line_string += f"// {line_number:#04x}: {chr(line_number)}" + "\n"
+    else:
+        line_string += f"// {line_number:#04x}" + "\n"
+
+    # Return the line
+    return line_string
+
+
+def write_lookup_table_preamble(file: pathlib.Path, font_name: str):
+    """Write the preamble of the lookup table.
+
+    Args:
+        file (pathlib.Path): 1x1 [-] The file to write to.
+        font_name (str): 1x1 [-] The name of the font.
+
+    ---
+    """
+    # Write the beginning of the lookup table
+    with open(file, "a") as File:
+        File.write(_OTOS_LookUp_Preamble.format(Name_Upper=font_name.upper()))
+        File.write(r"{" + "\n")
+
+
+def write_lookup_table_begin(file: pathlib.Path, font_name: str, size: tuple):
+    """Write the beginning of the lookup table.
+
+    Args:
+        file (pathlib.Path): 1x1 [-] The file to write to.
+        font_name (str): 1x1 [-] The name of the font.
+        size (tuple): 1x2 [px] The (width, height) of the font.
+
+    ---
+    """
+    # Write the beginning of the lookup table
+    with open(file, "a") as File:
+        File.write(
+            _OTOS_LookUp_Begin.format(Name=font_name, Width=size[0], Height=size[1])
+        )
+        File.write(r"{" + "\n")
+
+
+def write_lookup_table_end(
+    file: pathlib.Path, font_name: str, size: tuple, stride: int
+):
+    """Write the end of the lookup table.
+
+    Args:
+        file (pathlib.Path): 1x1 [-] The file to write to.
+        font_name (str): 1x1 [-] The name of the font.
+        size (tuple): 1x2 [px] The (width, height) of the font.
+        stride (int): 1x1 [-] The stride of the font.
+
+    ---
+    """
+    # Write the end of the lookup table
+    with open(file, "a") as File:
+        File.write(
+            _OTOS_LookUp_End.format(
+                Namespace=get_namespace_for_size(size[1]),
+                Name=font_name,
+                Width=size[0],
+                Height=size[1],
+                Stride=stride,
+            )
+        )
+
+def finalize_file(file: pathlib.Path, font_name: str):
+    """Finalize the file.
+
+    Args:
+        file (pathlib.Path): 1x1 [-] The file to write to.
+        font_name (str): 1x1 [-] The name of the font.
+
+    ---
+    """
+    # Write the end of the file
+    with open(file, "a") as File:
+        File.write(f"}};\n#endif /* {font_name.upper()}_H_ */")
 
 
 # === Constants ===
@@ -100,3 +179,33 @@ _OTOS_Copyright: str = """/**
  *
  */
  """
+
+_OTOS_LookUp_Preamble: str = """
+#ifndef {Name_Upper}_H_
+#define {Name_Upper}_H_
+
+// === Includes ===
+#include "font_base.h"
+
+namespace Font
+"""
+
+_OTOS_LookUp_Begin: str = """    /**
+     * @brief Ascii font lookup table
+     * @details width: {Width:d} px, height: {Height:d} px
+     */
+    constexpr unsigned char Lookup_{Name}_{Height:d}px[] = """
+
+_OTOS_LookUp_End: str = """    }};
+
+    // === Font Information ===
+    // {Name}: {Height:d}px
+    namespace {Namespace}
+    {{
+        constexpr Font::Base_t {Name} = {{
+            .data = Lookup_{Name}_{Height:d}px,
+            .width_px = {Width:d},
+            .height_px = {Height:d},
+            .stride = {Stride:d}}};
+    }};
+"""

@@ -74,10 +74,85 @@ class Test_File_Export():
         """Test if the lookup table is written correctly."""
         # Arrange
         expected = "0x00, 0x01, 0x02, 0x03, // 0x00\n"
-        file = tmp_path / "test.txt"
 
         # Act
-        UUT.write_array_line(file, 0, [0,1,2,3])
+        line = UUT.get_array_line(0, [0,1,2,3])
+
+        # Assert
+        assert line.startswith(expected)
+
+    def test_lookup_table_preamble(self, tmp_path: pathlib.Path):
+        """Test if the lookup table is written correctly."""
+        # Arrange
+        expected = "\n"
+        expected += "#ifndef TESTFONT_H_\n"
+        expected += "#define TESTFONT_H_\n"
+        expected += "\n"
+        expected += "// === Includes ===\n"
+        expected += "#include \"font_base.h\"\n"
+        expected += "\n"
+        expected += "namespace Font\n"
+        expected += "{\n"
+
+        # Act
+        file = tmp_path / "test.txt"
+        file.touch()
+        UUT.write_lookup_table_preamble(file, "TestFont")
+
+        # Assert
+        assert file.read_text().startswith(expected)
+
+    def test_lookup_table_begin(self, tmp_path: pathlib.Path):
+        """Test if the lookup table is written correctly."""
+        # Arrange
+        expected = "    /**\n"
+        expected += "     * @brief Ascii font lookup table\n"
+        expected += "     * @details width: 12 px, height: 20 px\n"
+        expected += "     */\n"
+        expected += "    constexpr unsigned char Lookup_TestFont_20px[] = {\n"
+
+        # Act
+        file = tmp_path / "test.txt"
+        file.touch()
+        UUT.write_lookup_table_begin(file, "TestFont", (12, 20))
+
+        # Assert
+        assert file.read_text().startswith(expected)
+
+    def test_lookup_table_end(self, tmp_path: pathlib.Path):
+        """Test if the lookup table is written correctly."""
+        # Arrange
+        expected = "    };\n"
+        expected += "\n"
+        expected += "    // === Font Information ===\n"
+        expected += "    // TestFont: 20px\n"
+        expected += "    namespace _20px\n"
+        expected += "    {\n"
+        expected += "        constexpr Font::Base_t TestFont = {\n"
+        expected += "            .data = Lookup_TestFont_20px,\n"
+        expected += "            .width_px = 12,\n"
+        expected += "            .height_px = 20,\n"
+        expected += "            .stride = 3};\n"
+        expected += "    };\n"
+
+        # Act
+        file = tmp_path / "test.txt"
+        file.touch()
+        UUT.write_lookup_table_end(file, "TestFont", (12, 20), 3)
+
+        # Assert
+        assert file.read_text().startswith(expected)
+
+    def test_finalizing_file(self, tmp_path: pathlib.Path):
+        """Test if the lookup table is written correctly."""
+        # Arrange
+        expected = "};\n"
+        expected += "#endif /* TESTFONT_H_ */"
+
+        # Act
+        file = tmp_path / "test.txt"
+        file.touch()
+        UUT.finalize_file(file, "TestFont")
 
         # Assert
         assert file.read_text().startswith(expected)
