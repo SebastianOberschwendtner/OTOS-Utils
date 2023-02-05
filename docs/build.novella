@@ -1,0 +1,19 @@
+# import the module for emoji support
+import materialx.emoji
+
+template "mkdocs"
+
+action "mkdocs-update-config" {
+  site_name = "OTOS Utils Documentation"
+  update '$.theme.features' add: []
+  update '$.theme.palette' set: {'scheme': 'slate', 'primary': 'lime'}
+  update '$.theme' add: {'favicon': 'img/logo.png'}
+
+  # Add the emoji support as python modules -> the yaml lib does only export it correctly this way
+  update '$.markdown_extensions' add: ['attr_list']
+  update '$.markdown_extensions' add: [{'pymdownx.emoji': {'emoji_index': materialx.emoji.twemoji, 'emoji_generator': materialx.emoji.to_svg}}]
+}
+
+action "preprocess-markdown" {
+  use 'pydoc'
+}
