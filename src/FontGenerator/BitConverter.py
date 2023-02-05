@@ -26,6 +26,10 @@ Converts a TTF font to a bitmap which can be used by OTOS.
 
 ### Author
 Sebastian Oberschwendtner, :email: sebastian.oberschwendtner@gmail.com
+
+---
+
+## Code
 """
 # === Modules ===
 from PIL import Image, ImageFont, ImageDraw

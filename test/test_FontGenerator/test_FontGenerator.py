@@ -28,7 +28,7 @@ Sebastian Oberschwendtner, :email: sebastian.oberschwendtner@gmail.com
 import pytest, pathlib
 
 # === UUT ===
-from utils import FontGenerator as UUT
+from src import FontGenerator as UUT
 
 # === Test list ===
 # ▢ Font Data Type:
@@ -46,7 +46,7 @@ from utils import FontGenerator as UUT
 def FontConverter_Mock(mocker):
     """Mock the FontConverter class."""
     _mock = mocker.patch.multiple(
-        "utils.FontGenerator.BitConverter.FontConverter",
+        "src.FontGenerator.BitConverter.FontConverter",
         __init__=mocker.DEFAULT,
         convert_character=mocker.DEFAULT,
         fontname = "TestFont",

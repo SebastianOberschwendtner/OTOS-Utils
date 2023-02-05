@@ -28,7 +28,7 @@ Sebastian Oberschwendtner, :email: sebastian.oberschwendtner@gmail.com
 import pytest, pathlib
 
 # === UUT ===
-from utils.FontGenerator import Exporter as UUT
+from src.FontGenerator import Exporter as UUT
 
 # === Test list ===
 # ▢ File formatting:

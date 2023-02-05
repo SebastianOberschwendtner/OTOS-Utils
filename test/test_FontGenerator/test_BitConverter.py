@@ -28,7 +28,7 @@ Sebastian Oberschwendtner, :email: sebastian.oberschwendtner@gmail.com
 import pytest, pathlib
 
 # === UUT ===
-from utils.FontGenerator import BitConverter as UUT
+from src.FontGenerator import BitConverter as UUT
 
 # === Test list ===
 # ▢ Create a canvas according to the desired font size and width

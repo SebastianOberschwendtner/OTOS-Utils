@@ -17,7 +17,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 ### Details
-- *File:*     FontGenerator/__init__.py
+- *File:*     `FontGenerator/__init__.py`
 - *Details:*  Python 3.9
 - *Date:*     2022-10-08
 - *Version:*  v1.0.0
@@ -28,6 +28,9 @@ Graphics library.
 
 ### Author
 Sebastian Oberschwendtner, :email: sebastian.oberschwendtner@gmail.com
+
+---
+## Code
 """
 # === Modules ===
 import pathlib, math

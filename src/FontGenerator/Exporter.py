@@ -16,7 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 ### Details
-- *File:*     FontGenerator/Exporter.py
+- *File:*     `FontGenerator/Exporter.py`
 - *Details:*  Python 3.9
 - *Date:*     2022-10-08
 - *Version:*  v1.0.0
@@ -26,6 +26,9 @@ Exporter for the font generator.
 
 ### Author
 Sebastian Oberschwendtner, :email: sebastian.oberschwendtner@gmail.com
+
+---
+## Code
 """
 # === Modules ===
 from . import pathlib
