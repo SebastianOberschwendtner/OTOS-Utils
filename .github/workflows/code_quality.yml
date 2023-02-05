@@ -54,7 +54,7 @@ jobs:
 
     - name: Analyze the code
       run: |
-        pylint --disable=invalid-name,consider-using-join ./src
+        pylint ./src
 
   formatting:
     runs-on: ubuntu-latest

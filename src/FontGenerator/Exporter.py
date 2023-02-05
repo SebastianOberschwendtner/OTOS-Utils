@@ -79,7 +79,7 @@ def get_array_line(line_number: int, array: list) -> str:
     # Convert every element in the array to a hex string
     line_string = ""
     for Item in array:
-        line_string += f"{Item:#04x}, "
+        line_string += f"{Item:#04x}, "  # pylint: disable=consider-using-join
 
     # End the line with the line number as comment
     if chr(line_number).isprintable() and line_number != 0x5C:
