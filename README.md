@@ -4,11 +4,11 @@
 ![issues](https://img.shields.io/github/issues-raw/SebastianOberschwendtner/otos-utils)
 ![bugs](https://img.shields.io/github/issues/SebastianOberschwendtner/otos-utils/bug?color=red)
 
-Utility functions for developing with the OTOS operating system.
+Utility functions for developing with the OTOS operating system. [Goto documentation](www.sebastianoberschwendtner.github.io/OTOS-Utils/)
 
 
 ## Software Framework
-![GitHub Test Status](https://img.shields.io/github/workflow/status/SebastianOberschwendtner/otos-utils/Unit%20Test?label=test)
+![GitHub Test Status](https://img.shields.io/github/actions/status/SebastianOberschwendtner/otos-utils/code_quality.yml?branch=main?label=test)
 ![GitHub top language](https://img.shields.io/github/languages/top/SebastianOberschwendtner/otos-utils?color=brightgreen)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/SebastianOberschwendtner/otos-utils)
 ![GitHub](https://img.shields.io/github/license/SebastianOberschwendtner/otos-utils)
