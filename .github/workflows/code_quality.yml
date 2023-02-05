@@ -35,6 +35,7 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
+    needs: test
 
     steps:
     - uses: actions/checkout@v3
@@ -53,10 +54,11 @@ jobs:
 
     - name: Analyze the code
       run: |
-        pylint --disable=invalid-name ./src
+        pylint --disable=invalid-name,consider-using-join ./src
 
   formatting:
     runs-on: ubuntu-latest
+    needs: lint
 
     steps:
     - uses: actions/checkout@v3

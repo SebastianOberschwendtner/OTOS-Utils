@@ -101,7 +101,7 @@ def write_lookup_table_preamble(file: pathlib.Path, font_name: str):
     ---
     """
     # Write the beginning of the lookup table
-    with open(file, "a") as File:
+    with open(file, "a", encoding="utf-8") as File:
         File.write(_OTOS_LookUp_Preamble.format(Name_Upper=font_name.upper()))
         File.write(r"{" + "\n")
 
@@ -117,7 +117,7 @@ def write_lookup_table_begin(file: pathlib.Path, font_name: str, size: tuple):
     ---
     """
     # Write the beginning of the lookup table
-    with open(file, "a") as File:
+    with open(file, "a", encoding="utf-8") as File:
         File.write(
             _OTOS_LookUp_Begin.format(Name=font_name, Width=size[0], Height=size[1])
         )
@@ -138,7 +138,7 @@ def write_lookup_table_end(
     ---
     """
     # Write the end of the lookup table
-    with open(file, "a") as File:
+    with open(file, "a", encoding="utf-8") as File:
         File.write(
             _OTOS_LookUp_End.format(
                 Namespace=get_namespace_for_size(size[1]),
@@ -160,7 +160,7 @@ def finalize_file(file: pathlib.Path, font_name: str):
     ---
     """
     # Write the end of the file
-    with open(file, "a") as File:
+    with open(file, "a", encoding="utf-8") as File:
         File.write(f"}};\n#endif /* {font_name.upper()}_H_ */")
 
 
