@@ -23,14 +23,21 @@
 - *Version:*  v1.0.0
 
 ## Description
-CLI interace for the font generator.
+CLI interface for the font generator.
 
 ### Author
 Sebastian Oberschwendtner, :email: sebastian.oberschwendtner@gmail.com
+
+---
+## Code
+
+---
 """
 # === Modules ===
-import pathlib, argparse
+import pathlib
+import argparse
 import FontGenerator as FG
+
 
 # === Functions ===
 def main(font_file: pathlib.Path, sizes: list, outdir: pathlib.Path):
@@ -41,6 +48,9 @@ def main(font_file: pathlib.Path, sizes: list, outdir: pathlib.Path):
         size (int): 1x1 [px] The font size in pixels.
         outdir (pathlib.Path): 1x1 [-] The output directory.
 
+    Raises:
+        FileNotFoundError: The font file is not available on the system.
+
     ---
     """
     # Inform the user
@@ -50,11 +60,8 @@ def main(font_file: pathlib.Path, sizes: list, outdir: pathlib.Path):
     # Create font and check whether the font is valid
     try:
         fonts = FG.Fonts(font_file, sizes)
-        pass
     except FileNotFoundError:
         print("The font is not available on your system. :|")
-    except:
-        print("Something went wrong. :|")
 
     # Convert the font
     print("Converting the font...")
@@ -66,21 +73,46 @@ def main(font_file: pathlib.Path, sizes: list, outdir: pathlib.Path):
     print("Done. :D")
 
 
-
 # === Main ===
 if __name__ == "__main__":
     # Create argument parser
-    parser = argparse.ArgumentParser(description="Generate font files for the OTOS Graphics library.")
+    parser = argparse.ArgumentParser(
+        description="Generate font files for the OTOS Graphics library."
+    )
 
     # Add arguments
     # - Font file
-    parser.add_argument("--font","-f", type=pathlib.Path, help="Path or Name of the font file.", required=True)
+    parser.add_argument(
+        "--font",
+        "-f",
+        type=pathlib.Path,
+        help="Path or Name of the font file.",
+        required=True,
+    )
     # - Font size
-    parser.add_argument("--size","-s", type=int, nargs='+', help="Size(s) of the font in pixels.", required=True)
+    parser.add_argument(
+        "--size",
+        "-s",
+        type=int,
+        nargs="+",
+        help="Size(s) of the font in pixels.",
+        required=True,
+    )
     # - Output file
-    parser.add_argument("--output","-o", type=pathlib.Path, help="Path to the output file.", required=True)
+    parser.add_argument(
+        "--output",
+        "-o",
+        type=pathlib.Path,
+        help="Path to the output file.",
+        required=True,
+    )
     # - Version
-    parser.add_argument("--version","-v", action="version", version=f"%(prog)s: {FG.__name__}, Version: {FG.__version__}")
+    parser.add_argument(
+        "--version",
+        "-v",
+        action="version",
+        version=f"%(prog)s: {FG.__name__}, Version: {FG.__version__}",
+    )
 
     # Parse arguments
     args = parser.parse_args()

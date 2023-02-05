@@ -30,11 +30,14 @@ Sebastian Oberschwendtner, :email: sebastian.oberschwendtner@gmail.com
 ---
 
 ## Code
+
+---
 """
 # === Modules ===
 from PIL import Image, ImageFont, ImageDraw
 
 # === Functions ===
+
 
 def create_canvas(height_px: int, width_px: int) -> Image:
     """Creates a canvas for the font.
@@ -48,6 +51,7 @@ def create_canvas(height_px: int, width_px: int) -> Image:
     ---
     """
     return Image.new("1", (width_px, height_px), 0)
+
 
 def get_max_width(font: ImageFont.FreeTypeFont) -> int:
     """Get the maximum required width of the font in pixels.
@@ -63,12 +67,13 @@ def get_max_width(font: ImageFont.FreeTypeFont) -> int:
     # Get the maximum width of the font
     max_width = 0
     for iChar in range(256):
-        left, top, right, bottom = font.getbbox(chr(iChar))
+        left, _, right, _ = font.getbbox(chr(iChar))
         width = right - left
         if width > max_width:
             max_width = width
 
     return max_width
+
 
 def get_max_offset(font: ImageFont.FreeTypeFont) -> int:
     """Get the maximum offset in y direction to fit all characters.
@@ -84,11 +89,12 @@ def get_max_offset(font: ImageFont.FreeTypeFont) -> int:
     # Get the maximum width of the font
     max_offset = 0
     for iChar in range(256):
-        left, top, right, bottom = font.getbbox(chr(iChar))
+        _, top, _, bottom = font.getbbox(chr(iChar))
         if bottom > max_offset:
             max_offset = top
 
     return max_offset
+
 
 def convert_pixel_sequence(sequence) -> int:
     """Converts a pixel sequence to a byte.
@@ -108,6 +114,7 @@ def convert_pixel_sequence(sequence) -> int:
 
     return byte
 
+
 # === Classes ===
 
 
@@ -116,6 +123,7 @@ class FontConverter:
 
     ---
     """
+
     # === Properties ===
     @property
     def fontname(self) -> str:
@@ -131,10 +139,20 @@ class FontConverter:
 
     @property
     def height_px(self) -> int:
+        """The height of the font in pixels.
+
+        Returns:
+            int: [px] The height of the font in pixels.
+        """
         return self._height_px
 
     @property
     def width_px(self) -> int:
+        """The width of the font in pixels.
+
+        Returns:
+            int: [px] The width of the font in pixels.
+        """
         return self._width_px
 
     # === Constructor ===
@@ -154,8 +172,8 @@ class FontConverter:
         # Load the font
         try:
             self.font = ImageFont.truetype(font_path, font_size)
-        except:
-            raise FileNotFoundError("Font file not found.")
+        except Exception as exc:
+            raise FileNotFoundError("Font file not found.") from exc
 
         # Get the maximum width of the font
         self._width_px = get_max_width(self.font)
@@ -165,7 +183,7 @@ class FontConverter:
         """Converts a character to a bitmap.
 
         Args:
-            character (int): 1x1 [-] The character to convert. 
+            character (int): 1x1 [-] The character to convert.
 
         Returns:
             list: 1x1 [-] The bitmap.
@@ -188,7 +206,7 @@ class FontConverter:
                 # Get the pixel sequence
                 sequence = []
                 for i in range(8):
-                    sequence.append(canvas.getpixel((x, (bytes_y-1-y)*8+i)))
+                    sequence.append(canvas.getpixel((x, (bytes_y - 1 - y) * 8 + i)))
 
                 # Convert the sequence to a byte
                 byte = convert_pixel_sequence(sequence)

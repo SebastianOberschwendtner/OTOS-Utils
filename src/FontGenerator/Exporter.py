@@ -29,9 +29,11 @@ Sebastian Oberschwendtner, :email: sebastian.oberschwendtner@gmail.com
 
 ---
 ## Code
+
+---
 """
 # === Modules ===
-from . import pathlib
+import pathlib
 
 # === Functions ===
 
@@ -80,7 +82,7 @@ def get_array_line(line_number: int, array: list) -> str:
         line_string += f"{Item:#04x}, "
 
     # End the line with the line number as comment
-    if chr(line_number).isprintable() and line_number != 0x5c:
+    if chr(line_number).isprintable() and line_number != 0x5C:
         line_string += f"// {line_number:#04x}: {chr(line_number)}" + "\n"
     else:
         line_string += f"// {line_number:#04x}" + "\n"
@@ -146,6 +148,7 @@ def write_lookup_table_end(
                 Stride=stride,
             )
         )
+
 
 def finalize_file(file: pathlib.Path, font_name: str):
     """Finalize the file.
